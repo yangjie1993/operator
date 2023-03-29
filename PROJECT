@@ -1,0 +1,19 @@
+domain: yj.io
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: operator
+repo: github.com/yangjie1993/operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: yj.io
+  group: app
+  kind: MyApp
+  path: github.com/yangjie1993/operator/api/v1beta1
+  version: v1beta1
+version: "3"

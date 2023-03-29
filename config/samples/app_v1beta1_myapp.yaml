@@ -1,0 +1,12 @@
+apiVersion: app.yj.io/v1beta1
+kind: MyApp
+metadata:
+  labels:
+    app.kubernetes.io/name: myapp
+    app.kubernetes.io/instance: myapp-sample
+    app.kubernetes.io/part-of: operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: operator
+  name: myapp-sample
+spec:
+  # TODO(user): Add fields here
