@@ -9,4 +9,10 @@ metadata:
     app.kubernetes.io/created-by: operator
   name: myapp-sample
 spec:
-  # TODO(user): Add fields here
+  size: 2
+  image: nginx:1.7.9
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30002
+
