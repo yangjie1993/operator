@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/created-by: operator
   name: myapp-sample
 spec:
-  size: 2
-  image: nginx:1.7.9
+  size: 3
+  image: docker.io/library/nginx:1.7.9
   ports:
     - port: 80
       targetPort: 80
