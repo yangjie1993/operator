@@ -28,7 +28,6 @@ import (
 	"k8s.io/client-go/util/retry"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 var (
@@ -56,11 +55,10 @@ type MyAppReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
 func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	//_ = log.FromContext(ctx)
 	log := r.Log.WithValues("myapp", req.NamespacedName)
 	//ctx := context.Background()
 
-	// TODO(user): your logic here
 	//首先我们获取MyApp实例
 	var myapp appv1beta1.MyApp
 	err := r.Client.Get(ctx, req.NamespacedName, &myapp)
