@@ -19,6 +19,7 @@ package controllers
 import (
 	"context"
 	"encoding/json"
+	"github.com/go-logr/logr"
 	appv1beta1 "github.com/yangjie1993/operator/api/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -36,6 +37,7 @@ var (
 
 // MyAppReconciler reconciles a MyApp object
 type MyAppReconciler struct {
+	Log logr.Logger
 	client.Client
 	Scheme *runtime.Scheme
 }
@@ -55,7 +57,7 @@ type MyAppReconciler struct {
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
 func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
-
+	log := r.Log.WithValues("myapp", req.NamespacedName)
 	//ctx := context.Background()
 
 	// TODO(user): your logic here
@@ -75,6 +77,7 @@ func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	if myapp.DeletionTimestamp != nil {
 		return ctrl.Result{}, nil
 	}
+	log.Info("fetch myapp objects", "myapp", myapp)
 
 	// 如果不存在关联的资源，是不是应该去创建
 	// 如果存在关联的资源，是不是也要判断是否需要更新
