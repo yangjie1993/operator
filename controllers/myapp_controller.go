@@ -77,8 +77,8 @@ func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	if myapp.DeletionTimestamp != nil {
 		return ctrl.Result{}, nil
 	}
-	log.Info("fetch myapp objects", "myapp", myapp)
-
+	//log.Info("fetch myapp objects", "myapp", myapp)
+	log.Info("fetch myapp objects", "myapp22", 22)
 	// 如果不存在关联的资源，是不是应该去创建
 	// 如果存在关联的资源，是不是也要判断是否需要更新
 	deploy := &appsv1.Deployment{}
