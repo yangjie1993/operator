@@ -40,7 +40,8 @@ type MyAppReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=app.yj.io,resources=myapps,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups="",resources=service,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=app.yj.io,resources=myapps/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=app.yj.io,resources=myapps/finalizers,verbs=update
 
@@ -76,13 +77,13 @@ func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 		return ctrl.Result{}, nil
 	}
 	//log.Info("fetch myapp objects", "myapp", myapp)
-	log.Info("fetch myapp objects", "myapp22", 22)
+	//log.Info("fetch myapp objects", "myapp22", 22)
 	//调谐，获取到当前的一个状态，然后和我们期望的状态进行对比是不是就可以
 	//CreateUpdate Deployment
 	var deploy appsv1.Deployment
 	deploy.Name = myapp.Name
 	deploy.Namespace = myapp.Namespace
-	or, err := ctrl.CreateOrUpdate(ctx, r, &deploy, func() error {
+	or, err := ctrl.CreateOrUpdate(ctx, r.Client, &deploy, func() error {
 		//调谐必须在这个函数中去实现
 		MutateDeployment(&myapp, &deploy)
 		return controllerutil.SetControllerReference(&myapp, &deploy, r.Scheme)
@@ -96,7 +97,7 @@ func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	var svc corev1.Service
 	svc.Name = myapp.Name
 	svc.Namespace = myapp.Namespace
-	or, err = ctrl.CreateOrUpdate(ctx, r, &svc, func() error {
+	or, err = ctrl.CreateOrUpdate(ctx, r.Client, &svc, func() error {
 		MutateService(&myapp, &svc)
 		return controllerutil.SetControllerReference(&myapp, &svc, r.Scheme)
 	})
@@ -191,5 +192,7 @@ func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 func (r *MyAppReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&appv1beta1.MyApp{}).
+		Owns(&appsv1.Deployment{}).
+		Owns(&corev1.Service{}).
 		Complete(r)
 }
