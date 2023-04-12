@@ -56,8 +56,8 @@ type MyAppReconciler struct {
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
 func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	//_ = log.FromContext(ctx)
-	r.Log = log.FromContext(ctx)
-	log := r.Log.WithValues("myapp", req.NamespacedName)
+	log := log.FromContext(ctx)
+	//log := r.Log.WithValues("myapp", req.NamespacedName)
 	//ctx := context.Background()
 
 	//首先我们获取MyApp实例
