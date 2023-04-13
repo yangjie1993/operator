@@ -10,6 +10,7 @@ import (
 
 func MutateDeployment(app *v1beta1.MyApp, deploy *appsv1.Deployment) {
 	labels := map[string]string{"app": app.Name}
+
 	selector := &metav1.LabelSelector{MatchLabels: labels}
 	deploy.Spec = appsv1.DeploymentSpec{
 		Replicas: app.Spec.Size,

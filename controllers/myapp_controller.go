@@ -92,11 +92,15 @@ func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	if err != nil {
 		return ctrl.Result{}, err
 	}
+
+	myapp.Status.DeploymentStatus = deploy.Status
+
 	log.Info("CreateOrUpdate", "Deployment", or)
 	// CreateOrUpdate service
 	var svc corev1.Service
 	svc.Name = myapp.Name
 	svc.Namespace = myapp.Namespace
+
 	or, err = ctrl.CreateOrUpdate(ctx, r.Client, &svc, func() error {
 		MutateService(&myapp, &svc)
 		return controllerutil.SetControllerReference(&myapp, &svc, r.Scheme)
@@ -185,6 +189,7 @@ func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	//	return ctrl.Result{}, err
 	//}
 	//return ctrl.Result{}, nil
+
 	return ctrl.Result{}, nil
 }
 
