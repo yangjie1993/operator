@@ -299,6 +299,8 @@ spec:
                   deployment (their labels match the selector).
                 format: int32
                 type: integer
+              tag:
+                type: string
               unavailableReplicas:
                 description: Total number of unavailable pods targeted by this deployment.
                   This is the total number of pods that are still required for the
@@ -312,6 +314,8 @@ spec:
                   deployment that have the desired template spec.
                 format: int32
                 type: integer
+            required:
+            - tag
             type: object
         type: object
     served: true
