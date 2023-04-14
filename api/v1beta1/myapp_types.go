@@ -41,6 +41,7 @@ type MyAppStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 	appsv1.DeploymentStatus `json:",inline"`
+	Tag                     string `json:"tag"`
 }
 
 //+kubebuilder:object:root=true

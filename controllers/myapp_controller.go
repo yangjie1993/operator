@@ -92,10 +92,21 @@ func (r *MyAppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	if err != nil {
 		return ctrl.Result{}, err
 	}
-
-	myapp.Status.DeploymentStatus = deploy.Status
-
 	log.Info("CreateOrUpdate", "Deployment", or)
+
+	or, err = ctrl.CreateOrUpdate(ctx, r.Client, &myapp, func() error {
+		//调谐必须在这个函数中去实现
+		//MutateDeployment(&myapp, &deploy)
+		//return controllerutil.SetControllerReference(&myapp, &deploy, r.Scheme)
+		myapp.Status.DeploymentStatus = deploy.Status
+		myapp.Status.Tag = "2"
+		return nil
+	})
+
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
 	// CreateOrUpdate service
 	var svc corev1.Service
 	svc.Name = myapp.Name
